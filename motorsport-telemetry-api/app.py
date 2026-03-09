@@ -82,5 +82,24 @@ def get_best_lap():
 
     return jsonify(best_lap.to_dict())
 
+@app.route("/track/fastest", methods=["GET"])
+def fastest_driver_on_track():
+    track = request.args.get("track")
+
+    if not track:
+        return jsonify({"error": "Track parameter is required"}), 400
+
+    fastest = (
+        Telemetry.query
+        .filter_by(track=track)
+        .order_by((Telemetry.sector1 + Telemetry.sector2 + Telemetry.sector3).asc())
+        .first()
+    )
+
+    if not fastest:
+        return jsonify({"error": "No telemetry found for this track"}), 404
+
+    return jsonify(fastest.to_dict())
+
 if __name__ == "__main__":
     app.run(debug=True)
