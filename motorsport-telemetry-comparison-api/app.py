@@ -49,14 +49,19 @@ def compare_drivers():
 
     avg1 = sum(l.lap_time for l in laps1) / len(laps1)
     avg2 = sum(l.lap_time for l in laps2) / len(laps2)
+    fastest1 = min(l.lap_time for l in laps1)
+    fastest2 = min(l.lap_time for l in laps2)
 
     return jsonify({
-        "driver1": driver1,
-        "driver2": driver2,
-        "driver1_avg_lap": round(avg1, 3),
-        "driver2_avg_lap": round(avg2, 3),
-        "faster_driver": driver1 if avg1 < avg2 else driver2
-    })
+    "driver1": driver1,
+    "driver2": driver2,
+    "driver1_avg_lap": round(avg1, 3),
+    "driver2_avg_lap": round(avg2, 3),
+    "driver1_fastest_lap": round(fastest1, 3),
+    "driver2_fastest_lap": round(fastest2, 3),
+    "faster_driver_average": driver1 if avg1 < avg2 else driver2,
+    "faster_driver_fastest_lap": driver1 if fastest1 < fastest2 else driver2
+})
 
 @app.route("/driver/average", methods=["GET"])
 def average_lap_time():
