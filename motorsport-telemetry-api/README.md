@@ -34,6 +34,7 @@ This project focuses on backend fundamentals including data modelling, API desig
 - Calculate performance metrics based on sector-derived lap times
 - Query telemetry sessions across tracks
 - Return structured performance insights via API endpoints
+- Compare drivers using both average and fastest lap times
 
 ---
 
