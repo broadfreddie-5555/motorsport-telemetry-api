@@ -58,6 +58,25 @@ def compare_drivers():
         "faster_driver": driver1 if avg1 < avg2 else driver2
     })
 
+@app.route("/driver/average", methods=["GET"])
+def average_lap_time():
+    driver = request.args.get("driver")
+
+    if not driver:
+        return jsonify({"error": "Driver parameter is required"}), 400
+
+    laps = TelemetrySession.query.filter_by(driver_name=driver).all()
+
+    if not laps:
+        return jsonify({"error": "No data found for this driver"}), 404
+
+    avg = sum(l.lap_time for l in laps) / len(laps)
+
+    return jsonify({
+        "driver": driver,
+        "average_lap_time": round(avg, 3)
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)
+
